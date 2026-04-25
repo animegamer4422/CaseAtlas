@@ -18,7 +18,7 @@ const uploadMedia = async (req, res) => {
       // If f.path contains 'cloudinary', it's a cloudinary URL. Otherwise fallback to local uploads URL
       const finalUrl = f.path && f.path.includes('cloudinary') 
         ? f.path 
-        : `http://localhost:5000/uploads/${f.filename}`;
+        : `${process.env.BACKEND_URL || 'http://localhost:5000'}/uploads/${f.filename}`;
 
       return {
         type: fileType,

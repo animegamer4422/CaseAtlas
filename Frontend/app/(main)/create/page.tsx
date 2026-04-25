@@ -104,7 +104,7 @@ export default function CreateCasePage() {
         <div style={{ display: 'flex', gap: 12 }}>
           <button
             className="btn btn-primary"
-            onClick={() => navigator.clipboard.writeText(`http://localhost:3000/case/${published}`)}
+            onClick={() => navigator.clipboard.writeText(`${window.location.origin}/case/${published}`)}
           >
             Copy Share Link
           </button>

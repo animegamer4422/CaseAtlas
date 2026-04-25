@@ -5,7 +5,7 @@ let io;
 const initSocket = (server) => {
   io = new Server(server, {
     cors: {
-      origin: '*', // Adjust this for production to the frontend URL
+      origin: process.env.FRONTEND_URL || '*', // Use FRONTEND_URL environment variable in production
       methods: ['GET', 'POST', 'PATCH', 'DELETE']
     }
   });
