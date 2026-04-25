@@ -17,11 +17,11 @@ const searchRoutes = require('./routes/search.routes');
 const app = express();
 
 // Middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 app.use(cors({
   origin: process.env.FRONTEND_URL || '*'
 }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
 if (process.env.NODE_ENV !== 'production') {
   app.use(morgan('dev'));
