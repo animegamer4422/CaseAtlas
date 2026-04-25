@@ -161,10 +161,10 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
                       className={`notif-item ${!n.read ? 'notif-item-unread' : ''}`}
                       onClick={() => {
                         markRead(n.id);
-                        if (n.caseId) router.push(`/case/${n.caseId}`);
+                        if (n.case_id) router.push(`/case/${n.case_id}`);
                         setNotifOpen(false);
                       }}
-                      style={{ cursor: n.caseId ? 'pointer' : 'default' }}
+                      style={{ cursor: n.case_id ? 'pointer' : 'default' }}
                     >
                       <div className="notif-icon-wrap">
                         <NotifIcon type={n.type} />
@@ -208,7 +208,7 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
                   transition: 'all var(--t-base)',
                 }}
               >
-                <span className="navbar-username">{user.handle}</span>
+                <span className="navbar-username">{user.username}</span>
                 <div className="avatar avatar-sm" style={{ backgroundColor: user.avatarColor }}>{user.avatarInitials}</div>
               </button>
 

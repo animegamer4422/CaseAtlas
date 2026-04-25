@@ -28,7 +28,7 @@ export const api = {
   post: async (endpoint: string, body: any) => {
     // If it's FormData, don't set Content-Type so fetch can set the boundary automatically
     const isFormData = body instanceof FormData;
-    const headers = { ...getAuthHeaders() };
+    const headers: any = { ...getAuthHeaders() };
     if (isFormData) {
       delete headers['Content-Type'];
     }

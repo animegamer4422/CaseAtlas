@@ -50,7 +50,7 @@ export default function NotificationsPage() {
 
   const handleClick = (n: Notif) => {
     markRead(n.id);
-    if (n.caseId) router.push(`/case/${n.caseId}`);
+    if (n.case_id) router.push(`/case/${n.case_id}`);
   };
 
   return (
@@ -132,7 +132,7 @@ export default function NotificationsPage() {
                 border: `1px solid ${n.read ? 'var(--border-subtle)' : 'rgba(99,102,241,0.20)'}`,
                 borderLeft: n.read ? '1px solid var(--border-subtle)' : '3px solid var(--indigo-500)',
                 borderRadius: 'var(--radius-xl)',
-                cursor: n.caseId ? 'pointer' : 'default',
+                cursor: n.case_id ? 'pointer' : 'default',
                 transition: 'background 0.15s, border-color 0.15s',
               }}
               onClick={() => handleClick(n)}
@@ -176,12 +176,12 @@ export default function NotificationsPage() {
                   <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
                     {timeAgo(n.created_at)}
                   </span>
-                  {n.caseId && (
+                  {n.case_id && (
                     <span style={{
                       fontSize: '0.6875rem', fontFamily: 'JetBrains Mono, monospace',
                       color: 'var(--indigo-400)', display: 'flex', alignItems: 'center', gap: 4,
                     }}>
-                      {n.caseId} <ArrowRight size={10} />
+                      {n.case_id} <ArrowRight size={10} />
                     </span>
                   )}
                 </div>

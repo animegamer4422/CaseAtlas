@@ -12,6 +12,7 @@ export interface User {
   role: string;
   avatarInitials?: string;
   avatarColor?: string;
+  createdAt?: string;
 }
 
 interface AuthContextType {

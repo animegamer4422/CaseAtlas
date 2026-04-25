@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import {
@@ -22,7 +22,7 @@ const CATEGORY_ICONS: Record<string, string> = {
   other: '📋',
 };
 
-const STATUS_CONFIG: Record<string, { cls: string; icon: JSX.Element; label: string }> = {
+const STATUS_CONFIG: Record<string, { cls: string; icon: ReactNode; label: string }> = {
   open:     { cls: 'badge-open',     icon: <CheckCircle size={10} />, label: 'Open' },
   resolved: { cls: 'badge-resolved', icon: <CheckCircle size={10} />, label: 'Resolved' },
   unknown:  { cls: 'badge-unknown',  icon: <AlertTriangle size={10} />, label: 'Unknown' },

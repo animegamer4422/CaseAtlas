@@ -80,8 +80,8 @@ export default function CasePage() {
         });
 
         socket.on('new_comment', (comment: any) => {
-          setComments(prev => {
-            if (prev.some(c => c._id === comment._id)) return prev;
+          setComments((prev: any[]) => {
+            if (prev.some((c: any) => c._id === comment._id)) return prev;
             return [comment, ...prev];
           });
         });
@@ -134,12 +134,12 @@ export default function CasePage() {
       if (subscribed) {
         await api.delete(`/cases/${caseId}/subscribe`);
         setSubscribed(false);
-        setCaseItem(prev => ({...prev, subscribers: prev.subscribers.filter(s => s._id !== user._id)}));
+        setCaseItem((prev: any) => ({...prev, subscribers: prev.subscribers.filter((s: any) => s._id !== user._id)}));
         window.dispatchEvent(new Event('subscription_updated'));
       } else {
         await api.post(`/cases/${caseId}/subscribe`, {});
         setSubscribed(true);
-        setCaseItem(prev => ({...prev, subscribers: [...prev.subscribers, { _id: user._id }]}));
+        setCaseItem((prev: any) => ({...prev, subscribers: [...prev.subscribers, { _id: user._id }]}));
         window.dispatchEvent(new Event('subscription_updated'));
       }
     } catch (e) {
@@ -171,8 +171,8 @@ export default function CasePage() {
       setNewComment('');
       setCommentMediaFiles([]);
       
-      setComments(prev => {
-        if (prev.some(c => c._id === newSavedComment._id)) return prev;
+      setComments((prev: any[]) => {
+        if (prev.some((c: any) => c._id === newSavedComment._id)) return prev;
         return [newSavedComment, ...prev];
       });
     } catch (e) {
@@ -417,7 +417,7 @@ export default function CasePage() {
                         <input 
                           type="file" multiple accept="image/*,video/*" 
                           style={{ display: 'none' }} 
-                          onChange={(e) => setCommentMediaFiles(prev => [...prev, ...Array.from(e.target.files || [])])}
+                          onChange={(e) => setCommentMediaFiles((prev: File[]) => [...prev, ...Array.from(e.target.files || [])])}
                         />
                       </label>
                       <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
@@ -443,7 +443,7 @@ export default function CasePage() {
                       {commentMediaFiles.map((file, i) => (
                         <div key={i} style={{ padding: '4px 8px', background: 'var(--bg-elevated)', borderRadius: 'var(--radius-sm)', fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: 6 }}>
                           <span style={{ maxWidth: 100, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{file.name}</span>
-                          <X size={12} style={{cursor: 'pointer'}} onClick={() => setCommentMediaFiles(prev => prev.filter((_, idx) => idx !== i))} />
+                          <X size={12} style={{cursor: 'pointer'}} onClick={() => setCommentMediaFiles((prev: File[]) => prev.filter((_, idx) => idx !== i))} />
                         </div>
                       ))}
                     </div>
