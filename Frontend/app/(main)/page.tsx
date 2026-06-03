@@ -62,20 +62,9 @@ export default function HomePage() {
     e.preventDefault();
     const trimmed = query.trim();
     if (!trimmed) { triggerShake(); return; }
-    const match = trimmed.match(/CA-[A-Z0-9]{4}-[A-Z0-9]{4}/i);
-    const caseId = match ? match[0].toUpperCase() : trimmed;
-    try {
-      const results = await api.get(`/search?query=${caseId}`);
-      if (results.length > 0) {
-        router.push(`/case/${results[0].caseId}`);
-      } else {
-        setNotFound(true); triggerShake();
-        setTimeout(() => setNotFound(false), 4000);
-      }
-    } catch {
-      setNotFound(true); triggerShake();
-      setTimeout(() => setNotFound(false), 4000);
-    }
+    
+    // Navigate to the browse page to list all semantic results
+    router.push(`/browse?query=${encodeURIComponent(trimmed)}`);
   };
 
   const triggerShake = () => { setShake(true); setTimeout(() => setShake(false), 500); };

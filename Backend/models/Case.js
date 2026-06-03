@@ -29,6 +29,7 @@ const caseSchema = new mongoose.Schema(
     updateCount: { type: Number, default: 0 },
     isTrending: { type: Boolean, default: false },
     tags: [{ type: String }],
+    embedding: { type: [Number] },
   },
   { timestamps: true }
 );

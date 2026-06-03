@@ -2,7 +2,9 @@ packages:
   - 'Frontend'
   - 'Backend'
 allowBuilds:
+  '@google/genai': set this to true or false
   bcrypt: true
   core-js: true
+  protobufjs: set this to true or false
   sharp: true
   unrs-resolver: true

@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import {
   Search, Filter, MapPin, Clock, Users, MessageSquare,
@@ -33,9 +34,18 @@ const CATEGORY_ICONS: Record<string, string> = {
 };
 
 export default function BrowsePage() {
-  const [query, setQuery] = useState('');
-  const [categoryFilter, setCategoryFilter] = useState('');
-  const [statusFilter, setStatusFilter] = useState('');
+  return (
+    <Suspense fallback={<div style={{ padding: 32 }}>Loading cases...</div>}>
+      <BrowseContent />
+    </Suspense>
+  );
+}
+
+function BrowseContent() {
+  const searchParams = useSearchParams();
+  const [query, setQuery] = useState(searchParams.get('query') || '');
+  const [categoryFilter, setCategoryFilter] = useState(searchParams.get('category') || '');
+  const [statusFilter, setStatusFilter] = useState(searchParams.get('status') || '');
   const [showFilters, setShowFilters] = useState(false);
   const [cases, setCases] = useState<any[]>([]);
 

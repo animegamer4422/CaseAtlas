@@ -1,11 +1,16 @@
 const Case = require('../models/Case');
 const User = require('../models/User');
 const generateCaseId = require('../utils/generateCaseId');
+const { generateEmbedding } = require('../utils/embeddings');
 
 // Create a new case
 const createCase = async (req, res) => {
   try {
     const { title, description, category, location, media, visibility } = req.body;
+
+    // Generate semantic embedding for AI search
+    const embeddingText = `Title: ${title}. Description: ${description}. Category: ${category || 'other'}. Location: ${location || 'unknown'}.`;
+    const embedding = await generateEmbedding(embeddingText);
 
     const newCase = await Case.create({
       caseId: generateCaseId(),
@@ -17,6 +22,7 @@ const createCase = async (req, res) => {
       createdBy: req.user._id,
       moderators: [req.user._id],
       media: media || [],
+      embedding,
     });
 
     // Add to user's created cases
