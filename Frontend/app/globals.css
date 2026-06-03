@@ -1062,18 +1062,17 @@ select.input {
 .search-bar {
   display: flex;
   align-items: center;
-  gap: 0;
+  gap: 10px;
   width: 100%;
 }
 
 .search-bar .input {
-  border-radius: var(--radius-lg) 0 0 var(--radius-lg);
-  border-right: none;
+  border-radius: var(--radius-full);
   flex: 1;
 }
 
 .search-bar .btn {
-  border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+  border-radius: var(--radius-full);
   flex-shrink: 0;
 }
 
@@ -1435,9 +1434,9 @@ select.input {
   .sidebar-link { padding: 11px 12px; }
 
   /* Full-width search bar */
-  .search-bar { flex-direction: column; gap: 8px; }
-  .search-bar .input  { border-radius: var(--radius-lg); border-right: revert; }
-  .search-bar .btn    { border-radius: var(--radius-lg); width: 100%; }
+  .search-bar { flex-direction: column; gap: 10px; }
+  .search-bar .input  { border-radius: var(--radius-full); }
+  .search-bar .btn    { border-radius: var(--radius-full); width: 100%; }
 
   h1 { font-size: 1.5rem; }
   .hero h1 { font-size: 1.5rem; }

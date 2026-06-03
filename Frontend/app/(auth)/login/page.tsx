@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Shield, Mail, Lock, ArrowRight } from 'lucide-react';
+import { Shield, Mail, Lock, ArrowRight, X } from 'lucide-react';
 import { useAuth } from '@/components/providers/AuthProvider';
 import toast from 'react-hot-toast';
 
@@ -25,7 +25,15 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="card animate-in" style={{ width: '100%', maxWidth: 420, padding: '40px 32px' }}>
+    <div className="card animate-in" style={{ width: '100%', maxWidth: 420, padding: '40px 32px', position: 'relative' }}>
+      <Link 
+        href="/" 
+        className="btn btn-ghost btn-icon" 
+        style={{ position: 'absolute', top: 12, right: 12 }}
+        aria-label="Close"
+      >
+        <X size={20} />
+      </Link>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 32 }}>
         <div style={{
           width: 48, height: 48, borderRadius: '12px',

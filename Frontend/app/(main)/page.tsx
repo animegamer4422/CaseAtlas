@@ -95,9 +95,6 @@ export default function HomePage() {
               className="search-bar"
               style={{
                 animation: shake ? 'shakeX 0.4s ease' : 'none',
-                borderRadius: 'var(--radius-lg)',
-                boxShadow: notFound ? '0 0 0 3px rgba(239,68,68,0.25), var(--shadow-card)' : 'var(--shadow-card)',
-                transition: 'box-shadow 0.3s ease',
               }}
             >
               <div style={{ position: 'relative', flex: 1 }}>
@@ -108,11 +105,16 @@ export default function HomePage() {
                   placeholder="Enter Case ID  e.g. CA-7M2K-P9QF"
                   value={query}
                   onChange={e => { setQuery(e.target.value); setNotFound(false); }}
-                  style={{ paddingLeft: 44, borderRadius: 'var(--radius-lg) 0 0 var(--radius-lg)', borderRight: 'none', fontFamily: 'JetBrains Mono, monospace' }}
+                  style={{
+                    paddingLeft: 44,
+                    fontFamily: 'JetBrains Mono, monospace',
+                    borderRadius: 'var(--radius-full)',
+                    boxShadow: notFound ? '0 0 0 3px rgba(239,68,68,0.25), var(--shadow-card)' : 'var(--shadow-card)'
+                  }}
                   autoComplete="off" spellCheck={false}
                 />
               </div>
-              <button type="submit" className="btn btn-primary btn-lg" style={{ borderRadius: '0 var(--radius-lg) var(--radius-lg) 0', gap: 8 }}>
+              <button type="submit" className="btn btn-primary btn-lg" style={{ gap: 8, borderRadius: 'var(--radius-full)' }}>
                 Go <ArrowRight size={16} />
               </button>
             </div>

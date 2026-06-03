@@ -8,7 +8,7 @@ import {
   LogOut, Settings, User, LayoutDashboard, Menu,
   CheckCircle, AlertCircle, MessageSquare, Info, X
 } from 'lucide-react';
-import { MOCK_NOTIFICATIONS } from '@/lib/mockData';
+import { useNotifications } from '@/components/providers/NotificationProvider';
 import { useAuth } from '@/components/providers/AuthProvider';
 
 const NAV_ITEMS = [
@@ -47,17 +47,7 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const { user, logout, isLoading } = useAuth();
 
-  // Local stateful notifications so mark-read mutations actually reflect in UI
-  const [notifications, setNotifications] = useState(MOCK_NOTIFICATIONS);
-  const unreadCount = notifications.filter(n => !n.read).length;
-
-  const markAllRead = () => {
-    setNotifications(prev => prev.map(n => ({ ...n, read: true })));
-  };
-
-  const markRead = (id: string) => {
-    setNotifications(prev => prev.map(n => n.id === id ? { ...n, read: true } : n));
-  };
+  const { notifications, unreadCount, markAsRead, markAllRead } = useNotifications();
 
   return (
     <nav className="navbar">
@@ -157,24 +147,24 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
                 ) : (
                   notifications.map(n => (
                     <div
-                      key={n.id}
-                      className={`notif-item ${!n.read ? 'notif-item-unread' : ''}`}
+                      key={n._id}
+                      className={`notif-item ${!n.isRead ? 'notif-item-unread' : ''}`}
                       onClick={() => {
-                        markRead(n.id);
-                        if (n.case_id) router.push(`/case/${n.case_id}`);
+                        markAsRead(n._id);
+                        if (n.caseId?.caseId) router.push(`/case/${n.caseId.caseId}`);
                         setNotifOpen(false);
                       }}
-                      style={{ cursor: n.case_id ? 'pointer' : 'default' }}
+                      style={{ cursor: n.caseId ? 'pointer' : 'default' }}
                     >
                       <div className="notif-icon-wrap">
                         <NotifIcon type={n.type} />
                       </div>
                       <div className="notif-content">
-                        <div className="notif-item-title">{n.title}</div>
-                        <div className="notif-item-body">{n.body}</div>
-                        <div className="notif-item-time">{timeAgo(n.created_at)}</div>
+                        <div className="notif-item-title">{n.type.replace('_', ' ').toUpperCase()}</div>
+                        <div className="notif-item-body">{n.message}</div>
+                        <div className="notif-item-time">{timeAgo(n.createdAt)}</div>
                       </div>
-                      {!n.read && <span className="notif-unread-dot" />}
+                      {!n.isRead && <span className="notif-unread-dot" />}
                     </div>
                   ))
                 )}

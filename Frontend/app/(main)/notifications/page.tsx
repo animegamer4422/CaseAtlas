@@ -7,9 +7,7 @@ import {
   Bell, CheckCircle, MessageSquare, AlertCircle, Info,
   CheckCheck, Trash2, ChevronLeft, ArrowRight,
 } from 'lucide-react';
-import { MOCK_NOTIFICATIONS } from '@/lib/mockData';
-
-type Notif = typeof MOCK_NOTIFICATIONS[number] & { read: boolean };
+import { useNotifications, Notification } from '@/components/providers/NotificationProvider';
 
 function NotifIcon({ type }: { type?: string }) {
   if (type === 'update')  return <CheckCircle size={16} style={{ color: 'var(--green-400)' }} />;
@@ -37,20 +35,14 @@ const TYPE_LABELS: Record<string, string> = {
 
 export default function NotificationsPage() {
   const router = useRouter();
-  const [notifs, setNotifs] = useState<Notif[]>(
-    MOCK_NOTIFICATIONS.map(n => ({ ...n, read: n.read ?? false }))
-  );
+  const { notifications: notifs, unreadCount: unread, markAsRead: markRead, markAllRead, clearAll } = useNotifications();
 
-  const unread = notifs.filter(n => !n.read).length;
+  // We don't have a dismiss/delete endpoint in backend, so dismiss just marks as read
+  const dismiss = (id: string) => markRead(id);
 
-  const markAllRead = () => setNotifs(prev => prev.map(n => ({ ...n, read: true })));
-  const markRead = (id: string) => setNotifs(prev => prev.map(n => n.id === id ? { ...n, read: true } : n));
-  const dismiss = (id: string) => setNotifs(prev => prev.filter(n => n.id !== id));
-  const clearAll = () => setNotifs([]);
-
-  const handleClick = (n: Notif) => {
-    markRead(n.id);
-    if (n.case_id) router.push(`/case/${n.case_id}`);
+  const handleClick = (n: Notification) => {
+    markRead(n._id);
+    if (n.caseId?.caseId) router.push(`/case/${n.caseId.caseId}`);
   };
 
   return (
@@ -122,17 +114,17 @@ export default function NotificationsPage() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           {notifs.map(n => (
             <div
-              key={n.id}
+              key={n._id}
               style={{
                 display: 'flex',
                 alignItems: 'flex-start',
                 gap: 14,
                 padding: '16px 18px',
-                background: n.read ? 'rgba(20,20,33,0.5)' : 'rgba(99,102,241,0.05)',
-                border: `1px solid ${n.read ? 'var(--border-subtle)' : 'rgba(99,102,241,0.20)'}`,
-                borderLeft: n.read ? '1px solid var(--border-subtle)' : '3px solid var(--indigo-500)',
+                background: n.isRead ? 'rgba(20,20,33,0.5)' : 'rgba(99,102,241,0.05)',
+                border: `1px solid ${n.isRead ? 'var(--border-subtle)' : 'rgba(99,102,241,0.20)'}`,
+                borderLeft: n.isRead ? '1px solid var(--border-subtle)' : '3px solid var(--indigo-500)',
                 borderRadius: 'var(--radius-xl)',
-                cursor: n.case_id ? 'pointer' : 'default',
+                cursor: n.caseId ? 'pointer' : 'default',
                 transition: 'background 0.15s, border-color 0.15s',
               }}
               onClick={() => handleClick(n)}
@@ -159,29 +151,29 @@ export default function NotificationsPage() {
                       border: '1px solid rgba(99,102,241,0.15)',
                       textTransform: 'uppercase', letterSpacing: '0.05em',
                     }}>
-                      {TYPE_LABELS[(n as any).type] || (n as any).type}
+                      {TYPE_LABELS[(n as any).type] || (n as any).type.replace('_', ' ')}
                     </span>
                   )}
-                  {!n.read && (
+                  {!n.isRead && (
                     <span style={{ width: 7, height: 7, borderRadius: '50%', background: 'var(--indigo-500)', display: 'inline-block', boxShadow: '0 0 6px rgba(99,102,241,0.6)' }} />
                   )}
                 </div>
                 <div style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-primary)', marginBottom: 4 }}>
-                  {n.title}
+                  {n.type.replace('_', ' ').toUpperCase()}
                 </div>
                 <div style={{ fontSize: '0.8375rem', color: 'var(--text-secondary)', lineHeight: 1.5, marginBottom: 8 }}>
-                  {n.body}
+                  {n.message}
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                   <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-                    {timeAgo(n.created_at)}
+                    {timeAgo(n.createdAt)}
                   </span>
-                  {n.case_id && (
+                  {n.caseId && (
                     <span style={{
                       fontSize: '0.6875rem', fontFamily: 'JetBrains Mono, monospace',
                       color: 'var(--indigo-400)', display: 'flex', alignItems: 'center', gap: 4,
                     }}>
-                      {n.case_id} <ArrowRight size={10} />
+                      {n.caseId.caseId} <ArrowRight size={10} />
                     </span>
                   )}
                 </div>
@@ -189,10 +181,10 @@ export default function NotificationsPage() {
 
               {/* Actions */}
               <div style={{ display: 'flex', gap: 6, flexShrink: 0 }}>
-                {!n.read && (
+                {!n.isRead && (
                   <button
                     className="btn btn-ghost btn-sm"
-                    onClick={e => { e.stopPropagation(); markRead(n.id); }}
+                    onClick={e => { e.stopPropagation(); markRead(n._id); }}
                     title="Mark as read"
                     style={{ width: 30, height: 30, padding: 0 }}
                   >
@@ -201,7 +193,7 @@ export default function NotificationsPage() {
                 )}
                 <button
                   className="btn btn-ghost btn-sm"
-                  onClick={e => { e.stopPropagation(); dismiss(n.id); }}
+                  onClick={e => { e.stopPropagation(); dismiss(n._id); }}
                   title="Dismiss"
                   style={{ width: 30, height: 30, padding: 0 }}
                 >
