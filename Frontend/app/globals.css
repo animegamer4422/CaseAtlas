@@ -147,6 +147,7 @@ p  { color: var(--text-secondary); }
   grid-column: 2;
   grid-row: 2;
   overflow-y: auto;
+  overflow-x: hidden;
   height: calc(100vh - 64px);
 }
 

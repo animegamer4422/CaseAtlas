@@ -61,7 +61,7 @@ export default function MyCasesPage() {
       </div>
 
       {/* Stats */}
-      <div className="stats-row" style={{ gridTemplateColumns: 'repeat(3, 1fr)', marginBottom: 28 }}>
+      <div className="stats-row" style={{ marginBottom: 28 }}>
         <div className="stat-box">
           <div className="stat-box-value" style={{ color: 'var(--indigo-300)' }}>{subscribed.length}</div>
           <div className="stat-box-label">Subscribed</div>

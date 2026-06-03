@@ -293,7 +293,7 @@ export default function CasePage() {
         <div style={{ padding: '28px 32px 48px', maxWidth: 860 }}>
         {activeTab === 'Overview' && (
           <div className="animate-in" style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-            <div className="stats-row" style={{ gridTemplateColumns: 'repeat(4, 1fr)' }}>
+            <div className="stats-row">
               <div className="stat-box">
                 <div className="stat-box-value">{caseItem.updateCount || 0}</div>
                 <div className="stat-box-label">Updates</div>
